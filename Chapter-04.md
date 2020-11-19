@@ -2,25 +2,14 @@
 
 <br/>
 
-https://www.manning.com/books/serverless-applications-with-node-js
+### Chapter 04
 
-<br/>
-
-**Aunt Maria's pizzeria**  
-https://github.com/serverlesspub/pizzeria-web-app
-
-<br/>
-
-**some-like-it-hot-delivery**  
+// external service api
 https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
-### [Chapter 02](./Chapter-02.md)
-
-### [Chapter 03](./Chapter-03.md)
-
-### [Chapter 04](./Chapter-04.md)
+Same steps to deploy application as in the chapter 03
 
 ---
 
