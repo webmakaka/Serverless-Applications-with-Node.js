@@ -24,6 +24,8 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 ### [Chapter 05](./Chapter-05.md)
 
+### [Chapter 06](./Chapter-06.md)
+
 ---
 
 <br/>
