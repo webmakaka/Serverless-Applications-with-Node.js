@@ -2,7 +2,7 @@
 
 <br/>
 
-### Chapter 05
+### Chapter 05: Houston, we have a problem!
 
     $ aws logs describe-log-groups --region eu-central-1
 

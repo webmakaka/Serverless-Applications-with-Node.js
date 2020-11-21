@@ -2,7 +2,7 @@
 
 <br/>
 
-### Chapter 03
+### Chapter 03: Asynchronous work is easy, we Promise()
 
     $ cp api
     $ npm install

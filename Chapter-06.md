@@ -6,7 +6,7 @@
 
 <br/>
 
-### Chapter 06
+### Chapter 06: Level up your API
 
 - AWS Cognito SDK
 - API Gateway

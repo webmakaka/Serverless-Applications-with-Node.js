@@ -2,7 +2,7 @@
 
 <br/>
 
-### Chapter 02
+### Chapter 02: Building your first serverless API
 
     $ cp api
     $ npm install

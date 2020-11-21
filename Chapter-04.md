@@ -2,7 +2,7 @@
 
 <br/>
 
-### Chapter 04
+### Chapter 04: Pizza delivery: Connecting an external service
 
 // external service api
 https://github.com/serverlesspub/some-like-it-hot-delivery
