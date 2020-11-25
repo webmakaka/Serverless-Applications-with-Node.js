@@ -43,17 +43,16 @@ By default, this file has the following content:
 ```javascript
 const config = {
   aws_project_region: 'eu-central-1',
-  aws_cognito_identity_pool_id:
-    'eu-central-1:1bc1c606-f159-43e9-b090-117b6983768d',
+  aws_cognito_identity_pool_id: 'eu-central-1:1bc1c606-f159-43e9-b090-117b6983768d',
   aws_cognito_region: 'eu-central-1',
   aws_user_pools_id: 'eu-central-1_qynKm3Cn8',
   aws_user_pools_web_client_id: '68u98au0oq2qotp7neu7haagll',
   oauth: {},
   aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
-  apiUrl: 'https://itly1o3ab7.execute-api.eu-central-1.amazonaws.com/latest',
-};
+  apiUrl: 'https://itly1o3ab7.execute-api.eu-central-1.amazonaws.com/latest'
+}
 
-export default config;
+export default config
 ```
 
 Most of the values (except the last one), are required by the AWS Amplify.
@@ -71,7 +70,7 @@ Here's an explanation of all properties:
   - Go to [Cognito section](https://eu-central-1.console.aws.amazon.com/cognito).
   - Click on the "[Manage User Pools](https://eu-central-1.console.aws.amazon.com/cognito/users/)" button.
   - Select your Identity pool.
-  - Copy _Pool Id_ value.
+  - Copy *Pool Id* value.
 - `aws_user_pools_web_client_id` is your client secret. It's part of your Cognito User pool. To get this value, do the following:
   - Go to [Cognito section](https://eu-central-1.console.aws.amazon.com/cognito).
   - Click on the "[Manage User Pools](https://eu-central-1.console.aws.amazon.com/cognito/users/)" button.

@@ -24,9 +24,12 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 ### AWS roles, gropus, etc
 
+    $ export AWS_DEFAULT_REGION=eu-central-1
+
 <br/>
 
     $ aws cognito-idp create-user-pool \
+    --region ${AWS_DEFAULT_REGION} \
     --pool-name Pizzeria \
     --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \
     --username-attributes email \
@@ -38,18 +41,18 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 **Returns:**
 
 ```
-eu-west-1_OXklzcFOg
+eu-central-1_P1gv3h9ve
 ```
 
 <br/>
 
-    $ export clientId=4j9cmdpq5hqqomnd7pf66pn7hk
-    $ export userPoolId=eu-west-1_OXklzcFOg
+    $ export AWS_USER_POOL_ID=eu-central-1_P1gv3h9ve
 
 <br.>
 
     $ aws cognito-idp create-user-pool-client \
-        --user-pool-id ${userPoolId} \
+        --region ${AWS_DEFAULT_REGION} \
+        --user-pool-id ${AWS_USER_POOL_ID} \
         --client-name PizzeriaClient \
         --no-generate-secret \
         --query UserPoolClient.ClientId \
@@ -60,10 +63,15 @@ eu-west-1_OXklzcFOg
 **Returns:**
 
 ```
-4j9cmdpq5hqqomnd7pf66pn7hk
+55dddtdi8u1b51i3vlrm64f0d2
 ```
 
+    $ export AWS_CLIENT_ID=5r2q0ocgeqv42ja2oql69h2708
+
+<!--
     $ export userPoolClientId=4j9cmdpq5hqqomnd7pf66pn7hk
+
+-->
 
 <br/>
 
@@ -72,12 +80,10 @@ eu-west-1_OXklzcFOg
         --supported-login-providers graph.facebook.com=266094173886660 \
 -->
 
-<br/>
-
     $ aws cognito-identity create-identity-pool \
         --identity-pool-name Pizzeria \
         --allow-unauthenticated-identities \
-        --cognito-identity-providers ProviderName=cognito-idp.eu-west-1.amazonaws.com/${userPoolId},ClientId=${clientId},ServerSideTokenCheck=false \
+        --cognito-identity-providers ProviderName=cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_USER_POOL_ID},ClientId=${AWS_CLIENT_ID},ServerSideTokenCheck=false \
         --query IdentityPoolId \
         --output text
 
@@ -86,14 +92,14 @@ eu-west-1_OXklzcFOg
 **Returns:**
 
 ```
-eu-west-1:0515e7ae-1b93-4799-ac67-ef580c23869a
+eu-central-1:3788ebb7-ca02-4d33-aafe-6f3eca29970b
 ```
 
-    $ export identityPoolId=eu-west-1:0515e7ae-1b93-4799-ac67-ef580c23869a
+    $ export AWS_IDENTITY_POOL_ID=eu-central-1:3788ebb7-ca02-4d33-aafe-6f3eca29970b
 
 <br/>
 
-aws web console --> Ireland --> Cognito
+AWS web console --> Ireland --> Cognito
 
 Manage Identity Pools -> Pizzeria -> Edit identity pool
 
@@ -105,21 +111,85 @@ Create -> Unauthenticated role && Authenticated role
 
 <br/>
 
-aws web console --> Iam --> arn
+AWS web console --> IAM --> Roles --> arn
 
 <br/>
 
 ```
-$ export ROLE1_ARN=arn:aws:iam::859153500889:role/Cognito_PizzeriaUnauth_Role
-
-$ export ROLE2_ARN=arn:aws:iam::859153500889:role/Cognito_PizzeriaAuth_Role
+$ export AWS_ROLE1_ARN_AUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaAuth_Role
+$ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUnauth_Role
 ```
 
 <br/>
 
     $ aws cognito-identity set-identity-pool-roles \
-    --identity-pool-id ${identityPoolId} \
-    --roles authenticated=${ROLE1_ARN},unauthenticated=${ROLE2_ARN}
+    --identity-pool-id ${AWS_IDENTITY_POOL_ID} \
+    --roles authenticated=${AWS_ROLE1_ARN_AUTH},unauthenticated=${AWS_ROLE2_ARN_UNAUTH}
+
+<br/>
+
+### Api
+
+<br/>
+
+    $ cd api/pizza-api
+
+<!--
+
+AWS Web console -> cognito -> create user pool
+
+-->
+
+    $ vi config/env.json
+
+Set userPoolArn
+
+    $ npm install
+    $ npm run create
+
+<br/>
+
+```
+{
+  "lambda": {
+    "role": "pizza-api-executor",
+    "name": "pizza-api",
+    "region": "eu-central-1"
+  },
+  "api": {
+    "id": "8spojcz994",
+    "module": "api",
+    "url": "https://8spojcz994.execute-api.eu-central-1.amazonaws.com/latest"
+  }
+}
+
+```
+
+<br/>
+
+### Api image processor
+
+    $ cd api/pizza-image-processor
+
+    $ npm install -g claudia
+
+    $ npm install
+
+<br/>
+
+    $ claudia create \
+        --region ${AWS_DEFAULT_REGION} \
+        --handler index.handler
+
+
+    // Error occured
+    // AccessDenied: Access Denied
+    $ claudia add-s3-event-source \
+        --region ${AWS_DEFAULT_REGION} \
+        --bucket aunt-marias-pizzeria \
+        --prefix images/
+
+<br/>
 
 ### DB
 
@@ -130,45 +200,24 @@ $ export ROLE2_ARN=arn:aws:iam::859153500889:role/Cognito_PizzeriaAuth_Role
         --attribute-definitions AttributeName=orderId,AttributeType=S \
         --key-schema AttributeName=orderId,KeyType=HASH \
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        --region eu-central-1 \
+        --region ${AWS_DEFAULT_REGION} \
         --query TableDescription.TableArn \
         --output text
 
 <br/>
 
     $ aws iam put-role-policy \
+      --region ${AWS_DEFAULT_REGION} \
       --role-name pizza-api-executor \
       --policy-name PizzaApiDynamoDB \
       --policy-document file://./roles/dynamodb.json
 
+<br/>
 
     $ aws dynamodb scan \
+      --region ${AWS_DEFAULT_REGION} \
       --table-name pizza-orders \
-      --region eu-central-1 \
       --output json
-
-<br/>
-
-### Api
-
-    $ cd api/pizza-api
-    $ npm install
-    $ npm run create
-
-<br/>
-
-    $ cd api/pizza-image-processor
-    $ npm install
-
-<br/>
-
-    $ claudia create \
-        --region eu-central-1 \
-        --handler index.handler
-
-    $ claudia add-s3-event-source \
-        --bucket aunt-marias-pizzeria \
-        --prefix images/
 
 <br/>
 
@@ -177,7 +226,15 @@ $ export ROLE2_ARN=arn:aws:iam::859153500889:role/Cognito_PizzeriaAuth_Role
     $ cd client
     $ npm install
 
-update:
+<br/>
+
+AWS WebConsole --> Cognito --> User Pools --> Pool Id
+
+<br/>
+
+    $ src/config.js
+
+<br/>
 
     $ npm start
 
@@ -185,10 +242,22 @@ update:
 
 ```
 AWS Web Console:
-    IMA -> Roles -> delete -> role: pizza-api-executor
-    API Gateway -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
-    Lambda -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
-    DynamoDB -> Europe (Frankfurt)eu-central-1 -> Tables -> delete -> pizza-orders
+    Cognito --> Pools --> Delete Pool
+    Cognito --> Identity Pools --> Delete Pool
+    IAM -> Roles -> delete ->
+        role: pizza-api-executor
+        pizza-image-processor-execu
+        COgniot_PizzeriaAuth_Role
+        COgniot_PizzeriaUnauth_Role
+
+    API Gateway -> Europe (Frankfurt) eu-central-1 -> delete ->
+        pizza-api
+
+    Lambda -> Europe (Frankfurt) eu-central-1 -> delete ->
+        pizza-api
+        pizza-image-processor
+
+    DynamoDB -> Europe (Frankfurt) eu-central-1 -> pizza-orders --> Delete Table
 
 ```
 

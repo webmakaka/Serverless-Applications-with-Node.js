@@ -50,6 +50,8 @@
         --query='events[0].message' \
         --output=text
 
+<br/>
+
 ---
 
 <br/>
