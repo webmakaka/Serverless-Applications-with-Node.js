@@ -6,12 +6,12 @@ https://www.manning.com/books/serverless-applications-with-node-js
 
 <br/>
 
-**Aunt Maria's pizzeria**  
+**[Frontend] Aunt Maria's pizzeria**  
 https://github.com/serverlesspub/pizzeria-web-app
 
 <br/>
 
-**External delivery service**  
+**[External delivery service] Some Like It Hot Delivery**  
 https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
@@ -29,12 +29,12 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 <br/>
 
     $ aws cognito-idp create-user-pool \
-    --region ${AWS_DEFAULT_REGION} \
-    --pool-name Pizzeria \
-    --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \
-    --username-attributes email \
-    --query UserPool.Id \
-    --output text
+        --region ${AWS_DEFAULT_REGION} \
+        --pool-name Pizzeria \
+        --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \
+        --username-attributes email \
+        --query UserPool.Id \
+        --output text
 
 <br/>
 
@@ -48,7 +48,7 @@ eu-central-1_P1gv3h9ve
 
     $ export AWS_USER_POOL_ID=eu-central-1_P1gv3h9ve
 
-<br.>
+<br/>
 
     $ aws cognito-idp create-user-pool-client \
         --region ${AWS_DEFAULT_REGION} \
@@ -240,6 +240,8 @@ AWS WebConsole --> Cognito --> User Pools --> Pool Id
 
 <br/>
 
+### Delete Created AWS Resources
+
 ```
 AWS Web Console:
     Cognito --> Pools --> Delete Pool
@@ -263,7 +265,7 @@ AWS Web Console:
 
 <br/>
 
-### [Chapter to Chapter Development](./Part1.md)
+### [Step by Step Development](./Part1.md)
 
 <br/>
 
