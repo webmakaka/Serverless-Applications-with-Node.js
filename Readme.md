@@ -18,7 +18,13 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 ## Part 1: Serverless pizzeria
 
-**Need testing!**
+<br/>
+
+### [Step by Step Development](./Part1.md)
+
+<br/>
+
+### Run final project from part 1
 
 <br/>
 
@@ -262,10 +268,6 @@ AWS Web Console:
     DynamoDB -> Europe (Frankfurt) eu-central-1 -> pizza-orders --> Delete Table
 
 ```
-
-<br/>
-
-### [Step by Step Development](./Part1.md)
 
 <br/>
 
