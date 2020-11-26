@@ -9,7 +9,49 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
-Same steps to deploy application as in the chapter 03
+**Remove from AWS Console if exists:**
+
+```
+
+IAM: pizza-api-executor
+Lambda: pizza-api
+```
+
+<br/>
+
+    $ chapter-04/app/api/pizza-api
+    $ npm install
+    $ npm run create
+
+<br/>
+
+```
+{
+  "lambda": {
+    "role": "pizza-api-executor",
+    "name": "pizza-api",
+    "region": "eu-central-1"
+  },
+  "api": {
+    "id": "vgdvqla71j",
+    "module": "api",
+    "url": "https://vgdvqla71j.execute-api.eu-central-1.amazonaws.com/latest"
+  }
+}
+```
+
+<br/>
+
+    $ export AWS_DEFAULT_URL=https://vgdvqla71j.execute-api.eu-central-1.amazonaws.com
+
+<br/>
+
+    $ curl \
+    -H "Content-Type: application/json" \
+    -X GET ${AWS_DEFAULT_URL}/latest/orders \
+    | python3 -m json.tool
+
+<br/>
 
 ```
 DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
