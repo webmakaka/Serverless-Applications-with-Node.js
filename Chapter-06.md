@@ -160,6 +160,7 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
 
 IAM: pizza-api-executor
 Lambda: pizza-api
+GateWay: pizza-api
 ```
 
 <br/>

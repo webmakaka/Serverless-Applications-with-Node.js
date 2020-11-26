@@ -337,7 +337,8 @@ DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
 ```
 
 ```
-AWS Web Console:
+AWS Web Console -> Region Frankfurt:
+
     Cognito --> Pools --> Delete Pool
     Cognito --> Identity Pools --> Delete Pool
 
@@ -352,7 +353,7 @@ AWS Web Console:
 
     S3 -> delete bucket -> aunt-marias-pizzeria1
 
-    Lambda -> Europe (Frankfurt) eu-central-1 -> delete ->
+    Lambda -> delete ->
         pizza-api
         pizza-image-processor
 

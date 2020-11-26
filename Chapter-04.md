@@ -15,6 +15,7 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 IAM: pizza-api-executor
 Lambda: pizza-api
+GateWay: pizza-api
 ```
 
 <br/>
