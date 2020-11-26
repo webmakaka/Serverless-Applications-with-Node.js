@@ -336,8 +336,9 @@ or
 AWS Web Console:
     Cognito --> Pools --> Delete Pool
     Cognito --> Identity Pools --> Delete Pool
-    IAM -> Roles -> delete ->
-        role: pizza-api-executor
+
+    IAM -> Roles -> delete -> role: 
+        pizza-api-executor
         pizza-image-processor-execu
         COgniot_PizzeriaAuth_Role
         COgniot_PizzeriaUnauth_Role
