@@ -136,7 +136,7 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
 
 <br/>
 
-    $ cd part-01/app/api/pizza-api/
+    $ cd part-01-final/app/api/pizza-api/
 
 <!--
 
@@ -229,7 +229,7 @@ Set userPoolArn
 
 ### DB
 
-    $ cd part-01/app
+    $ cd part-01-final/app
 
     $ aws dynamodb create-table \
         --table-name pizza-orders \
@@ -337,7 +337,7 @@ AWS Web Console:
     Cognito --> Pools --> Delete Pool
     Cognito --> Identity Pools --> Delete Pool
 
-    IAM -> Roles -> delete -> role: 
+    IAM -> Roles -> delete -> role:
         pizza-api-executor
         pizza-image-processor-execu
         COgniot_PizzeriaAuth_Role
