@@ -17,6 +17,6 @@
     "claudia": "^5.12.0"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.792.0"
+    "aws-sdk": "^2.799.0"
   }
 }

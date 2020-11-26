@@ -54,6 +54,10 @@
         --query='events[0].message' \
         --output=text
 
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+```
+
 <br/>
 
 ---

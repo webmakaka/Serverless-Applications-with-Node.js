@@ -11,6 +11,10 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 Same steps to deploy application as in the chapter 03
 
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+```
+
 <br/>
 
 ---

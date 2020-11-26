@@ -10,7 +10,32 @@
 
 <br/>
 
-    $ curl https://x3p6livr48.execute-api.eu-central-1.amazonaws.com/latest/pizzas
+**Output:**
+
+<br/>
+
+```
+{
+  "lambda": {
+    "role": "pizza-api-executor",
+    "name": "pizza-api",
+    "region": "eu-central-1"
+  },
+  "api": {
+    "id": "xw6a7iej4d",
+    "module": "api",
+    "url": "https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com/latest"
+  }
+}
+```
+
+<br/>
+
+    $ export AWS_DEFAULT_URL=https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com
+
+<br/>
+
+    $ curl ${AWS_DEFAULT_URL}/latest/pizzas
 
 <br/>
 
@@ -22,7 +47,7 @@
 
     $ curl \
     -H "Content-Type: application/json" \
-    -X GET https://x3p6livr48.execute-api.eu-central-1.amazonaws.com/latest/pizzas \
+    -X GET ${AWS_DEFAULT_URL}/latest/pizzas \
     | python3 -m json.tool
 
 <br/>
@@ -160,6 +185,10 @@ AWS Web Console:
     API Gateway -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
     Lambda -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
 
+```
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
 ```
 
 <br/>

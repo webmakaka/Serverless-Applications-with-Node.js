@@ -138,15 +138,13 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
 
     $ cd part-01-final/app/api/pizza-api/
 
-<!--
-
-AWS Web console -> cognito -> create user pool
-
--->
-
-    $ vi config/env.json
+<br/>
 
 AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Pool ARN
+
+<br/>
+
+    $ vi config/env.json
 
 Set userPoolArn
 
@@ -170,6 +168,8 @@ Set userPoolArn
 }
 ```
 
+<br/>
+
     $ export AWS_DEFAULT_URL=https://tp63u5qr3l.execute-api.eu-central-1.amazonaws.com
 
 <br/>
@@ -177,8 +177,8 @@ Set userPoolArn
     // Should return 401
     // But i receive 400
     $ curl -o - -s -w ", status: %{http_code}\n" \
-        -d '{"pizzaId":1, "address":"221B Baker Street"}' \
         -H "Content-Type: application/json" \
+        -d '{"pizza":4, "address":"221B Baker Street"}' \
         -X POST ${AWS_DEFAULT_URL}/latest/orders
 
 <br/>
@@ -227,16 +227,16 @@ Set userPoolArn
 
 <br/>
 
-### DB
+### Dynamo DB
 
     $ cd part-01-final/app
 
     $ aws dynamodb create-table \
+        --region ${AWS_DEFAULT_REGION} \
         --table-name pizza-orders \
         --attribute-definitions AttributeName=orderId,AttributeType=S \
         --key-schema AttributeName=orderId,KeyType=HASH \
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        --region ${AWS_DEFAULT_REGION} \
         --query TableDescription.TableArn \
         --output text
 
@@ -331,6 +331,10 @@ or
 <br/>
 
 ### Delete Created AWS Resources
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+```
 
 ```
 AWS Web Console:

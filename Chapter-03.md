@@ -4,9 +4,13 @@
 
 ### Chapter 03: Asynchronous work is easy, we Promise()
 
-    $ cp api
+    $ cp chapter-03/app/api/pizza-api
     $ npm install
     $ npm run create
+
+<br/>
+
+**Output:**
 
 <br/>
 
@@ -18,9 +22,9 @@
     "region": "eu-central-1"
   },
   "api": {
-    "id": "igb087eobf",
+    "id": "xw6a7iej4d",
     "module": "api",
-    "url": "https://igb087eobf.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
 ```
@@ -28,15 +32,16 @@
 <br/>
 
     $ export AWS_DEFAULT_REGION=eu-central-1
+    $ export AWS_DEFAULT_URL=https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com
 
 <br/>
 
     $ aws dynamodb create-table \
+        --region ${AWS_DEFAULT_REGION} \
         --table-name pizza-orders \
         --attribute-definitions AttributeName=orderId,AttributeType=S \
         --key-schema AttributeName=orderId,KeyType=HASH \
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        --region ${AWS_DEFAULT_REGION} \
         --query TableDescription.TableArn \
         --output text
 
@@ -49,13 +54,36 @@
     $ curl -i \
     -d '{"pizza":4, "address":"221B Baker Street"}' \
     -H "Content-Type: application/json" \
-    -X POST https://igb087eobf.execute-api.eu-central-1.amazonaws.com/latest/orders
+    -X POST ${AWS_DEFAULT_URL}/latest/orders
+
+<br/>
+
+**Output:**
+
+```
+HTTP/2 201
+content-type: application/json
+content-length: 2
+date: Thu, 26 Nov 2020 07:05:58 GMT
+x-amzn-requestid: 7cf02d62-9e15-45b7-b52a-5ff1dbb725ef
+access-control-allow-origin: *
+access-control-allow-headers: Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token
+x-amz-apigw-id: WmoJRETzliAFaIg=
+access-control-allow-methods: GET,POST,OPTIONS
+x-amzn-trace-id: Root=1-5fbf53d4-42e1b271543ea63f19a1ffe6;Sampled=0
+access-control-max-age: 0
+access-control-allow-credentials: true
+x-cache: Miss from cloudfront
+via: 1.1 fa679145440a8b5dfc579eecfc89d9d8.cloudfront.net (CloudFront)
+x-amz-cf-pop: ARN54-C1
+x-amz-cf-id: wkscMWCLW_Mrc89fyjFXsu6ZxODCtkb5K2zK0rTrtvGpynbIiF3XSw==
+```
 
 <br/>
 
     $ aws dynamodb scan \
-        --table-name pizza-orders \
         --region ${AWS_DEFAULT_REGION} \
+        --table-name pizza-orders \
         --output json
 
 <br/>
@@ -68,7 +96,7 @@
                 "S": "221B Baker Street"
             },
             "orderId": {
-                "S": "3aa08dc2-4bde-45f8-abea-1d313cde7bd3"
+                "S": "5f761093-b805-4603-b951-c36704d22182"
             },
             "pizza": {
                 "N": "4"
@@ -89,7 +117,7 @@
 
     $ curl \
     -H "Content-Type: application/json" \
-    -X GET https://igb087eobf.execute-api.eu-central-1.amazonaws.com/latest/orders \
+    -X GET ${AWS_DEFAULT_URL}/latest/orders \
     | python3 -m json.tool
 
 <br/>
@@ -98,7 +126,7 @@
 [
     {
         "address": "221B Baker Street",
-        "orderId": "3aa08dc2-4bde-45f8-abea-1d313cde7bd3",
+        "orderId": "5f761093-b805-4603-b951-c36704d22182",
         "pizza": 4,
         "status": "pending"
     }
@@ -106,6 +134,10 @@
 ```
 
 <br/>
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+```
 
 ```
 AWS Web Console:
