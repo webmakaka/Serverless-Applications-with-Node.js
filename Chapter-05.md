@@ -4,7 +4,11 @@
 
 ### Chapter 05: Houston, we have a problem!
 
-    $ aws logs describe-log-groups --region eu-central-1
+    $ export AWS_DEFAULT_REGION=eu-central-1
+
+<br/>
+
+    $ aws logs describe-log-groups --region ${AWS_DEFAULT_REGION}
 
 <br/>
 
@@ -12,7 +16,7 @@
       filter-log-events \
       --filter='Save an order' \
       --log-group-name=/aws/lambda/pizza-api \
-      --region=eu-central-1 \
+      --region=${AWS_DEFAULT_REGION} \
       --output=json
 
 <br/>
@@ -21,7 +25,7 @@
       filter-log-events \
       --filter='Save an order' \
       --log-group-name=/aws/lambda/pizza-api \
-      --region=eu-central-1 \
+      --region=${AWS_DEFAULT_REGION} \
       --output=text
 
 <br/>
@@ -30,7 +34,7 @@
         attach-role-policy \
         --policy-arn arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess \
         --role-name pizza-api-executor \
-        --region eu-central-1 \
+        --region ${AWS_DEFAULT_REGION} \
         --output json
 
 <br/>
@@ -39,7 +43,7 @@
         update-function-configuration \
         --function-name pizza-api \
         --tracing-config Mode=Active \
-        --region eu-central-1
+        --region ${AWS_DEFAULT_REGION}
 
 <br/>
 

@@ -27,12 +27,16 @@
 
 <br/>
 
+    $ export AWS_DEFAULT_REGION=eu-central-1
+
+<br/>
+
     $ aws dynamodb create-table \
         --table-name pizza-orders \
         --attribute-definitions AttributeName=orderId,AttributeType=S \
         --key-schema AttributeName=orderId,KeyType=HASH \
         --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        --region eu-central-1 \
+        --region ${AWS_DEFAULT_REGION} \
         --query TableDescription.TableArn \
         --output text
 
@@ -51,7 +55,7 @@
 
     $ aws dynamodb scan \
         --table-name pizza-orders \
-        --region eu-central-1 \
+        --region ${AWS_DEFAULT_REGION} \
         --output json
 
 <br/>

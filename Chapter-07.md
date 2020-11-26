@@ -7,7 +7,12 @@
 - AWS S3 Bucket
 
 <br/>
-    $ aws s3 mb s3://aunt-marias-pizzeria --region eu-central-1
+
+    $ export AWS_DEFAULT_REGION=eu-central-1
+
+<br/>
+
+    $ aws s3 mb s3://aunt-marias-pizzeria --region ${AWS_DEFAULT_REGION}
 
 <br/>
 
@@ -22,8 +27,10 @@
 <br/>
 
     $ claudia create \
-        --region eu-central-1 \
+        --region ${AWS_DEFAULT_REGION} \
         --handler index.handler
+
+<br/>
 
     $ claudia add-s3-event-source \
         --bucket aunt-marias-pizzeria \

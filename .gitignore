@@ -8,3 +8,6 @@ package-lock.json
 build
 .serverless
 .webpack
+
+# claudia
+claudia.json

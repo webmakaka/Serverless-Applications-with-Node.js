@@ -14,6 +14,10 @@
 
 <br/>
 
+    $ export AWS_DEFAULT_REGION=eu-central-1
+
+<br/>
+
     $ aws cognito-idp create-user-pool \
     --pool-name Pizzeria \
     --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \

@@ -24,7 +24,7 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
-### Run final project from part 1
+## Run final project from part 1
 
 <br/>
 
@@ -47,12 +47,12 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 **Returns:**
 
 ```
-eu-central-1_P1gv3h9ve
+eu-central-1_hWRkJVwjP
 ```
 
 <br/>
 
-    $ export AWS_USER_POOL_ID=eu-central-1_P1gv3h9ve
+    $ export AWS_USER_POOL_ID=eu-central-1_hWRkJVwjP
 
 <br/>
 
@@ -69,10 +69,10 @@ eu-central-1_P1gv3h9ve
 **Returns:**
 
 ```
-55dddtdi8u1b51i3vlrm64f0d2
+n2ft7fdh0ekmqqoc2lcjl81kl
 ```
 
-    $ export AWS_CLIENT_ID=5r2q0ocgeqv42ja2oql69h2708
+    $ export AWS_WEB_CLIENT_ID=n2ft7fdh0ekmqqoc2lcjl81kl
 
 <!--
     $ export userPoolClientId=4j9cmdpq5hqqomnd7pf66pn7hk
@@ -89,7 +89,7 @@ eu-central-1_P1gv3h9ve
     $ aws cognito-identity create-identity-pool \
         --identity-pool-name Pizzeria \
         --allow-unauthenticated-identities \
-        --cognito-identity-providers ProviderName=cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_USER_POOL_ID},ClientId=${AWS_CLIENT_ID},ServerSideTokenCheck=false \
+        --cognito-identity-providers ProviderName=cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_USER_POOL_ID},ClientId=${AWS_WEB_CLIENT_ID},ServerSideTokenCheck=false \
         --query IdentityPoolId \
         --output text
 
@@ -98,14 +98,14 @@ eu-central-1_P1gv3h9ve
 **Returns:**
 
 ```
-eu-central-1:3788ebb7-ca02-4d33-aafe-6f3eca29970b
+eu-central-1:47970ce8-1c69-4263-b76a-d213ac12cf21
 ```
 
-    $ export AWS_IDENTITY_POOL_ID=eu-central-1:3788ebb7-ca02-4d33-aafe-6f3eca29970b
+    $ export AWS_IDENTITY_POOL_ID=eu-central-1:47970ce8-1c69-4263-b76a-d213ac12cf21
 
 <br/>
 
-AWS web console --> Ireland --> Cognito
+AWS web console --> Frankfurt --> Cognito
 
 Manage Identity Pools -> Pizzeria -> Edit identity pool
 
@@ -132,13 +132,11 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
     --identity-pool-id ${AWS_IDENTITY_POOL_ID} \
     --roles authenticated=${AWS_ROLE1_ARN_AUTH},unauthenticated=${AWS_ROLE2_ARN_UNAUTH}
 
-<br/>
-
 ### Api
 
 <br/>
 
-    $ cd api/pizza-api
+    $ cd part-01/app/api/pizza-api/
 
 <!--
 
@@ -147,6 +145,8 @@ AWS Web console -> cognito -> create user pool
 -->
 
     $ vi config/env.json
+
+AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Pool ARN
 
 Set userPoolArn
 
@@ -163,13 +163,23 @@ Set userPoolArn
     "region": "eu-central-1"
   },
   "api": {
-    "id": "8spojcz994",
+    "id": "tp63u5qr3l",
     "module": "api",
-    "url": "https://8spojcz994.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://tp63u5qr3l.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
-
 ```
+
+    $ export AWS_DEFAULT_URL=https://tp63u5qr3l.execute-api.eu-central-1.amazonaws.com
+
+<br/>
+
+    // Should return 401
+    // But i receive 400
+    $ curl -o - -s -w ", status: %{http_code}\n" \
+        -d '{"pizzaId":1, "address":"221B Baker Street"}' \
+        -H "Content-Type: application/json" \
+        -X POST ${AWS_DEFAULT_URL}/latest/orders
 
 <br/>
 
@@ -183,16 +193,36 @@ Set userPoolArn
 
 <br/>
 
+    $ export AWS_DEFAULT_BUCKET=aunt-marias-pizzeria1
+
+    $ aws s3 mb s3://${AWS_DEFAULT_BUCKET} --region ${AWS_DEFAULT_REGION}
+
+<br/>
+
     $ claudia create \
         --region ${AWS_DEFAULT_REGION} \
         --handler index.handler
 
+<br/>
 
-    // Error occured
-    // AccessDenied: Access Denied
+**Output:**
+
+```
+{
+  "lambda": {
+    "role": "pizza-image-processor-executor",
+    "name": "pizza-image-processor",
+    "region": "eu-central-1"
+  }
+}
+
+```
+
+<br/>
+
     $ claudia add-s3-event-source \
         --region ${AWS_DEFAULT_REGION} \
-        --bucket aunt-marias-pizzeria \
+        --bucket ${AWS_DEFAULT_BUCKET} \
         --prefix images/
 
 <br/>
@@ -212,6 +242,14 @@ Set userPoolArn
 
 <br/>
 
+**Output:**
+
+```
+arn:aws:dynamodb:eu-central-1:859153500889:table/pizza-orders
+```
+
+<br/>
+
     $ aws iam put-role-policy \
       --region ${AWS_DEFAULT_REGION} \
       --role-name pizza-api-executor \
@@ -227,6 +265,19 @@ Set userPoolArn
 
 <br/>
 
+**Output:**
+
+```
+{
+    "Items": [],
+    "Count": 0,
+    "ScannedCount": 0,
+    "ConsumedCapacity": null
+}
+```
+
+<br/>
+
 ### Client
 
     $ cd client
@@ -234,15 +285,48 @@ Set userPoolArn
 
 <br/>
 
-AWS WebConsole --> Cognito --> User Pools --> Pool Id
+**aws_cognito_identity_pool_id**
+
+    $ echo ${AWS_IDENTITY_POOL_ID}
 
 <br/>
 
+**aws_user_pools_id **
+
+AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Pool Id
+
+or
+
+    $ echo ${AWS_USER_POOL_ID}
+    eu-central-1_hWRkJVwjP
+
+<br/>
+
+**aws_user_pools_web_client_id**
+
+    $ echo ${AWS_WEB_CLIENT_ID}
+    n2ft7fdh0ekmqqoc2lcjl81kl
+
+<br/>
+
+    // SET VARIABLES
     $ src/config.js
 
 <br/>
 
     $ npm start
+
+<br/>
+
+![Application](/img/pic-ch06-p02.png?raw=true)
+
+<br/>
+
+![Application](/img/pic-ch06-p03.png?raw=true)
+
+<br/>
+
+![Application](/img/pic-ch06-p04.png?raw=true)
 
 <br/>
 
@@ -260,6 +344,8 @@ AWS Web Console:
 
     API Gateway -> Europe (Frankfurt) eu-central-1 -> delete ->
         pizza-api
+
+    S3 -> delete bucket -> aunt-marias-pizzeria1
 
     Lambda -> Europe (Frankfurt) eu-central-1 -> delete ->
         pizza-api
