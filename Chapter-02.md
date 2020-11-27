@@ -35,7 +35,7 @@
 
 <br/>
 
-    $ curl ${AWS_DEFAULT_URL}/latest/pizzas
+    $ curl ${AWS_DEFAULT_URL}/latest
 
 <br/>
 
@@ -188,7 +188,7 @@ AWS Web Console:
 ```
 
 ```
-DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 ```
 
 <br/>

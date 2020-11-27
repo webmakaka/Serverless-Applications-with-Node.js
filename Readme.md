@@ -12,6 +12,7 @@ https://github.com/serverlesspub/pizzeria-web-app
 <br/>
 
 **[External delivery service] Some Like It Hot Delivery**  
+(possible external service from the book is not working)  
 https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
@@ -25,6 +26,17 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 <br/>
 
 ## Run final project from part 1
+
+<br/>
+
+### UPS looks api updated, need to rewrite original book code to work with claudia > 5.7.0
+
+**Setting up Authorization for the API**  
+https://github.com/claudiajs/claudia-api-builder/blob/master/docs/authorization.md
+
+<br/>
+
+Now i am stuck in the <a href="./Chapter-06.md">chapter 06</a>.
 
 <br/>
 
@@ -291,7 +303,7 @@ arn:aws:dynamodb:eu-central-1:859153500889:table/pizza-orders
 
 <br/>
 
-**aws_user_pools_id **
+**aws_user_pools_id**
 
 AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Pool Id
 
@@ -318,15 +330,15 @@ or
 
 <br/>
 
-![Application](/img/pic-ch06-p02.png?raw=true)
+![Application](/img/pic-part01-p01.png?raw=true)
 
 <br/>
 
-![Application](/img/pic-ch06-p03.png?raw=true)
+![Application](/img/pic-part01-p02.png?raw=true)
 
 <br/>
 
-![Application](/img/pic-ch06-p04.png?raw=true)
+![Application](/img/pic-part01-p01.png?raw=true)
 
 <br/>
 

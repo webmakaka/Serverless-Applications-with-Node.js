@@ -2,10 +2,6 @@
 
 <br/>
 
-**I did not understand anything from this chapter.**
-
-<br/>
-
 ### Chapter 06: Level up your API
 
 - AWS Cognito SDK
@@ -14,18 +10,7 @@
 
 <br/>
 
-**Possible param pizza should be replaced on pizza1**
-
-<br/>
-
     $ cd chapter-06/app/api/pizza-api
-
-<br/>
-
-    $ curl -o - -s -w ", status: %{http_code}\n" \
-        -H "Content-Type: application/json" \
-        -d '{"pizza":4, "address":"221B Baker Street"}' \
-        -X POST ${AWS_DEFAULT_URL}/latest/orders
 
 <br/>
 
@@ -40,12 +25,18 @@
 [
     {
         "address": "221B Baker Street",
-        "orderId": "5f761093-b805-4603-b951-c36704d22182",
+        "orderId": "b61aceac-6376-4502-9e47-ee8b052acc89",
         "pizza": 4,
         "status": "pending"
     }
 ]
 ```
+
+<br/>
+
+### THEY REMOVED GET ALL ORDERS FROM APP IN THE SRC FOR CHAPTER 06 !!!
+
+REQUEST FROM ABOWE WILL NOT WORK AFTER UPDATE APP.
 
 <br/>
 
@@ -66,14 +57,22 @@
 **Returns:**
 
 ```
-eu-central-1_WMugfBFIo
+eu-central-1_xPY9d5nko
 ```
 
 <br/>
 
-    $ export AWS_USER_POOL_ID=eu-central-1_WMugfBFIo
+    $ export AWS_USER_POOL_ID=eu-central-1_xPY9d5nko
 
 <br/>
+
+<!--
+enabledAuthFlows: [AuthFlow.USER_PASSWORD]
+
+
+ОБЯЗАТЕЛЬНО ПРОВЕРЬ!
+
+-->
 
     $ aws cognito-idp create-user-pool-client \
         --region ${AWS_DEFAULT_REGION} \
@@ -88,15 +87,10 @@ eu-central-1_WMugfBFIo
 **Returns:**
 
 ```
-34998jmn4n44lrtsivd45putuj
+4r1rlfokv9121t4fb48dvoia50
 ```
 
-    $ export AWS_WEB_CLIENT_ID=34998jmn4n44lrtsivd45putuj
-
-<!--
-    $ export userPoolClientId=4j9cmdpq5hqqomnd7pf66pn7hk
-
--->
+    $ export AWS_WEB_CLIENT_ID=4r1rlfokv9121t4fb48dvoia50
 
 <br/>
 
@@ -117,11 +111,12 @@ eu-central-1_WMugfBFIo
 **Returns:**
 
 ```
-eu-central-1:0c7e6549-fc72-4baa-9cf2-04f58d6981ca
-
+eu-central-1:2c6b1f13-662b-4c75-9983-8863f28d6f29
 ```
 
-    $ export AWS_IDENTITY_POOL_ID=eu-central-1:0c7e6549-fc72-4baa-9cf2-04f58d6981ca
+<br/>
+
+    $ export AWS_IDENTITY_POOL_ID=eu-central-1:2c6b1f13-662b-4c75-9983-8863f28d6f29
 
 <br/>
 
@@ -154,7 +149,7 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
 
 <br/>
 
-**Remove from AWS Console if exists:**
+**Remove from AWS Console if you want to create from the beginning:**
 
 ```
 
@@ -176,7 +171,14 @@ Set userPoolArn
 <br/>
 
     $ npm install
+
+    // If you want to create from the beginning
     $ npm run create
+
+or
+
+    // If you want to resume from previous steps
+    $ npm run update
 
 <br/>
 
@@ -192,65 +194,18 @@ Set userPoolArn
   "api": {
     "id": "9clq4fz1fj",
     "module": "api",
-    "url": "https://9clq4fz1fj.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
 ```
 
 <br/>
 
-    $ export AWS_DEFAULT_URL=https://9clq4fz1fj.execute-api.eu-central-1.amazonaws.com
+    $ export AWS_DEFAULT_URL=https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com
 
 <br/>
 
-    // Should return 401
-    // But i receive
-    // {"errorMessage":"Cannot read property 'claims' of undefined"}, status: 400
-    $ curl -o - -s -w ", status: %{http_code}\n" \
-        -H "Content-Type: application/json" \
-        -d '{"pizzaId":4, "address":"221B Baker Street"}' \
-        -X POST ${AWS_DEFAULT_URL}/latest/orders
-
-<br/>
-
-**CloudWatch: request.context**
-
-```
-  method: 'POST',
-  path: '/orders',
-  stage: 'latest',
-  sourceIp: '*******',
-  accountId: null,
-  user: null,
-  userAgent: 'curl/7.68.0',
-  userArn: null,
-  caller: null,
-  apiKey: undefined,
-  authorizerPrincipalId: null,
-  cognitoAuthenticationProvider: null,
-  cognitoAuthenticationType: null,
-  cognitoIdentityId: null,
-  cognitoIdentityPoolId: null,
-  authorizer: undefined
-}
-
-```
-
-<br/>
-
-    $ curl \
-        -H "Content-Type: application/json" \
-        -X GET ${AWS_DEFAULT_URL}/latest/orders \
-        | python3 -m json.tool
-
-```
-{
-    "message": "Missing Authentication Token"
-}
-```
-
-<br/>
-
+    // GET ALL PIZZAZ
     $ curl \
         -H "Content-Type: application/json" \
         -X GET ${AWS_DEFAULT_URL}/latest/pizzas \
@@ -304,8 +259,148 @@ Set userPoolArn
 
 <br/>
 
+AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Users and groups
+
+<br/>
+
+**Create User**
+
+<br/>
+
+![Application](/img/pic-ch06-p02.png?raw=true)
+
+<br/>
+
+Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show Details -> Enable username password based authentication (ALLOW_USER_PASSWORD_AUTH)
+
+<br/>
+
+    $ vi user-data.json
+
+<br/>
+
+```json
+{
+  "AuthParameters": {
+    "USERNAME": "myusername@gmail.com",
+    "PASSWORD": "mypassword"
+  },
+  "AuthFlow": "USER_PASSWORD_AUTH",
+  "ClientId": "4r1rlfokv9121t4fb48dvoia50"
+}
 ```
-DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+
+<br/>
+
+    $ curl -X POST \
+        --data @user-data.json \
+        -H 'X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth' \
+        -H 'Content-Type: application/x-amz-json-1.1' \
+        https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
+        | python3 -m json.tool
+
+<br/>
+
+```
+***
+    "ChallengeName": "NEW_PASSWORD_REQUIRED",
+***
+```
+
+<br/>
+
+    $ vi user-data-challenge.json
+
+<br/>
+
+```json
+{
+  "ChallengeName": "NEW_PASSWORD_REQUIRED",
+  "ChallengeResponses": {
+    "USERNAME": "myusername@gmail.com",
+    "NEW_PASSWORD": "mynewpassword"
+  },
+  "ClientId": "4r1rlfokv9121t4fb48dvoia50",
+  "Session": "session id"
+}
+```
+
+<br/>
+
+    $ curl -X POST \
+        --data @user-data-challenge.json \
+        -H 'X-Amz-Target: AWSCognitoIdentityProviderService.RespondToAuthChallenge' \
+        -H 'Content-Type: application/x-amz-json-1.1' \
+        https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
+        | python3 -m json.tool
+
+<br/>
+
+**Response:**
+
+```
+{
+    "AuthenticationResult": {
+        "AccessToken": "AccessToken",
+        "ExpiresIn": 3600,
+        "IdToken": "IdToken",
+        "RefreshToken": "RefreshToken",
+        "TokenType": "Bearer"
+    },
+    "ChallengeParameters": {}
+}
+
+```
+
+<br/>
+
+![Application](/img/pic-ch06-p03.png?raw=true)
+
+<br/>
+
+![Application](/img/pic-ch06-p04.png?raw=true)
+
+<br/>
+
+    // CREATE A NEW ORDER
+    $ curl -o - -s -w ", status: %{http_code}\n" \
+        -H "Content-Type: application/json" \
+        -d '{"pizzaId":4, "address":"221B Baker Street"}' \
+        -X POST ${AWS_DEFAULT_URL}/latest/orders
+
+<br/>
+
+**Response:**
+
+```
+{"message":"Unauthorized"}, status: 401
+```
+
+<br/>
+
+**Need to pass IdToken as Authorization. Not AccessToken.**
+
+<br/>
+
+    // CREATE A NEW ORDER
+    $ curl -o - -s -w ", status: %{http_code}\n" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: IdToken" \
+        -d '{"pizza":4, "address":"221B Baker Street"}' \
+        -X POST ${AWS_DEFAULT_URL}/latest/orders
+
+<br/>
+
+**Response:**
+
+```
+{"errorMessage":"getaddrinfo ENOTFOUND fake-delivery-api.effortlessserverless.com"}, status: 400
+```
+
+<br/>
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 ```
 
 <br/>

@@ -36,7 +36,11 @@
         --bucket aunt-marias-pizzeria \
         --prefix images/
 
-<br/>
+<br/>s
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
+```
 
 ---
 

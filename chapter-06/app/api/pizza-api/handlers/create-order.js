@@ -6,6 +6,8 @@ const rp = require('minimal-request-promise');
 
 function createOrder(request) {
   console.log('Save an order', request.body);
+
+  console.log('Request context', request.context);
   const userData = request.context.authorizer.claims;
   console.log('User data', userData);
 

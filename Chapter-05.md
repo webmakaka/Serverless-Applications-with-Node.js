@@ -4,6 +4,8 @@
 
 ### Chapter 05: Houston, we have a problem!
 
+<br/>
+
     $ export AWS_DEFAULT_REGION=eu-central-1
 
 <br/>
@@ -54,8 +56,10 @@
         --query='events[0].message' \
         --output=text
 
+<br/>
+
 ```
-DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 ```
 
 <br/>
