@@ -1,21 +1,20 @@
 {
   "name": "pizza-api",
-  "version": "1.0.4",
-  "description": "Full code for the chapter 4",
+  "version": "1.0.5",
+  "description": "Full code for the chapter 5",
   "main": "api.js",
   "scripts": {
     "create": "claudia create --region eu-central-1 --api-module api",
     "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.799.0"
+    "aws-sdk": "^2.963.0"
   },
   "devDependencies": {
-    "claudia": "^5.12.0"
+    "claudia": "^5.13.1"
   },
   "license": "MIT",
   "dependencies": {
-    "claudia-api-builder": "^4.1.2",
     "minimal-request-promise": "^1.5.0"
   }
 }

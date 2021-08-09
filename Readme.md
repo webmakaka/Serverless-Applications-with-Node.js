@@ -21,7 +21,7 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
-### [Step by Step Development](./Part1.md)
+### [Step by Step Development](./docs/Part1.md)
 
 <br/>
 
