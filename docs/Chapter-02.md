@@ -4,6 +4,8 @@
 
 ### Chapter 02: Building your first serverless API
 
+<br/>
+
     $ cp api
     $ npm install
     $ npm run create
@@ -22,16 +24,16 @@
     "region": "eu-central-1"
   },
   "api": {
-    "id": "xw6a7iej4d",
+    "id": "les0zwgs6f",
     "module": "api",
-    "url": "https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://les0zwgs6f.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
 ```
 
 <br/>
 
-    $ export AWS_DEFAULT_URL=https://xw6a7iej4d.execute-api.eu-central-1.amazonaws.com
+    $ export AWS_DEFAULT_URL=https://les0zwgs6f.execute-api.eu-central-1.amazonaws.com
 
 <br/>
 
@@ -48,77 +50,75 @@
     $ curl \
     -H "Content-Type: application/json" \
     -X GET ${AWS_DEFAULT_URL}/latest/pizzas \
-    | python3 -m json.tool
+    | jq
 
 <br/>
 
 ```
 [
-    {
-        "id": 1,
-        "name": "Capricciosa",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella",
-            "mushrooms",
-            "ham",
-            "olives"
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Quattro Formaggi",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella",
-            "parmesan cheese",
-            "blue cheese",
-            "goat cheese"
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Napoletana",
-        "ingredients": [
-            "tomato sauce",
-            "anchovies",
-            "olives",
-            "capers"
-        ]
-    },
-    {
-        "id": 4,
-        "name": "Margherita",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella"
-        ]
-    }
+  {
+    "id": 1,
+    "name": "Capricciosa",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella",
+      "mushrooms",
+      "ham",
+      "olives"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Quattro Formaggi",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella",
+      "parmesan cheese",
+      "blue cheese",
+      "goat cheese"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Napoletana",
+    "ingredients": [
+      "tomato sauce",
+      "anchovies",
+      "olives",
+      "capers"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Margherita",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella"
+    ]
+  }
 ]
-
 ```
 
 <br/>
 
     $ curl \
     -H "Content-Type: application/json" \
-    -X GET https://x3p6livr48.execute-api.eu-central-1.amazonaws.com/latest/pizzas/3 \
-    | python3 -m json.tool
+    -X GET ${AWS_DEFAULT_URL}/latest/pizzas/3 \
+    | jq
 
 <br/>
 
 ```
 {
-    "id": 3,
-    "name": "Napoletana",
-    "ingredients": [
-        "tomato sauce",
-        "anchovies",
-        "olives",
-        "capers"
-    ]
+  "id": 3,
+  "name": "Napoletana",
+  "ingredients": [
+    "tomato sauce",
+    "anchovies",
+    "olives",
+    "capers"
+  ]
 }
-
 ```
 
     $ npm run update
@@ -158,7 +158,7 @@
     $ curl -i \
     -d '{"pizzaId":1, "address":"221B Baker Street"}' \
     -H "Content-Type: application/json" \
-    -X POST https://x3p6livr48.execute-api.eu-central-1.amazonaws.com/latest/orders
+    -X POST ${AWS_DEFAULT_URL}/latest/orders
 
 <br/>
 
@@ -180,15 +180,17 @@ access-control-allow-credentials: true
 <br/>
 
 ```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
+```
+
+<br/>
+
+```
 AWS Web Console:
     IMA -> Roles -> delete -> role: pizza-api-executor
-    API Gateway -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
-    Lambda -> Europe (Frankfurt)eu-central-1 -> delete -> pizza-api
+    API Gateway -> Europe (Frankfurt) eu-central-1 -> delete -> pizza-api
+    Lambda -> Europe (Frankfurt) eu-central-1 -> delete -> pizza-api
 
-```
-
-```
-DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 ```
 
 <br/>

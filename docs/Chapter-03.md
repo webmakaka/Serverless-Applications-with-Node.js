@@ -8,8 +8,9 @@
 
 **Remove from AWS Console if exists:**
 
-```
+<br/>
 
+```
 IAM: pizza-api-executor
 Lambda: pizza-api
 GateWay: pizza-api
@@ -17,7 +18,7 @@ GateWay: pizza-api
 
 <br/>
 
-    $ cp chapter-03/app/api/pizza-api
+    $ cp chapter-03/app/api
     $ npm install
     $ npm run create
 

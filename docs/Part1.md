@@ -6,6 +6,16 @@
 
 <br/>
 
+AWS -> IAM -> Quick links -> My access key
+
+Access keys for CLI, SDK, & API access -> Create access key
+
+<br/>
+
+    $ aws configure
+
+<br/>
+
 ## Step by step
 
 ### [Chapter 02: Building your first serverless API](./Chapter-02.md)

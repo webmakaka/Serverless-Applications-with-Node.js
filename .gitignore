@@ -11,3 +11,5 @@ build
 
 # claudia
 claudia.json
+
+yarn.lock
