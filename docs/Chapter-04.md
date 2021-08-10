@@ -4,7 +4,9 @@
 
 ### Chapter 04: Pizza delivery: Connecting an external service
 
-// external service api
+<br/>
+
+// external service api  
 https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
@@ -14,12 +16,12 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
-    $ cp claudia.json ../../../../chapter-04/app/api/pizza-api/
+    $ cp claudia.json ../../../chapter-04/app/api/
 
 <br/>
 
-    $ cd ../../../../chapter-04/app/api/pizza-api/
-    $ npm install
+    $ cd ../../../chapter-04/app/api/
+    $ yarn install
     $ npm run update
 
 <br/>
@@ -27,59 +29,91 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 ```
 {
   "FunctionName": "pizza-api",
-  "FunctionArn": "arn:aws:lambda:eu-central-1:859153500889:function:pizza-api:21",
-  "Runtime": "nodejs12.x",
+  "FunctionArn": "arn:aws:lambda:eu-central-1:859153500889:function:pizza-api:28",
+  "Runtime": "nodejs14.x",
   "Role": "arn:aws:iam::859153500889:role/pizza-api-executor",
   "Handler": "api.proxyRouter",
-  "CodeSize": 10344025,
+  "CodeSize": 11365113,
   "Description": "A pizza API, an example app from \"Serverless applications with Claudia.js\"",
   "Timeout": 3,
   "MemorySize": 128,
-  "LastModified": "2020-11-27T05:35:21.027+0000",
-  "CodeSha256": "M7l2LNlnZJlgZzpVz/wkGPFhbiouMF1e/EsumPvk0BI=",
-  "Version": "21",
+  "LastModified": "2021-08-10T15:49:04.503+0000",
+  "CodeSha256": "3pWW5Zy0TOI635SeDaeOEeSYr4HFkqcnXx/wBXyomxY=",
+  "Version": "28",
   "KMSKeyArn": null,
   "TracingConfig": {
     "Mode": "PassThrough"
   },
   "MasterArn": null,
-  "RevisionId": "3ccf3484-0979-44ff-9817-2256e0c038f9",
+  "RevisionId": "14cdf499-1911-4a54-b09d-78621aba3daa",
   "State": "Active",
   "StateReason": null,
   "StateReasonCode": null,
   "LastUpdateStatus": "Successful",
   "LastUpdateStatusReason": null,
   "LastUpdateStatusReasonCode": null,
-  "url": "https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com/latest"
+  "PackageType": "Zip",
+  "SigningProfileVersionArn": null,
+  "SigningJobArn": null,
+  "url": "https://8kcum9jvta.execute-api.eu-central-1.amazonaws.com/latest"
 }
-
 ```
 
 <br/>
 
     $ export AWS_DEFAULT_REGION=eu-central-1
-    $ export AWS_DEFAULT_URL=https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com
+    $ export AWS_DEFAULT_URL=https://8kcum9jvta.execute-api.eu-central-1.amazonaws.com
 
 <br/>
 
-    // GET ALL ORDERS
-    $ curl \
+```
+// CREATE A NEW ORDER
+$ curl -i \
+    -d '{"pizza":3, "address":"Moscow"}' \
+    -H "Content-Type: application/json" \
+    -X POST ${AWS_DEFAULT_URL}/latest/orders
+```
+
+<br/>
+
+```
+// GET ALL ORDERS
+$ curl \
     -H "Content-Type: application/json" \
     -X GET ${AWS_DEFAULT_URL}/latest/orders \
-    | python3 -m json.tool
+    | jq
+```
 
 <br/>
 
 ```
 [
-    {
-        "address": "221B Baker Street",
-        "orderId": "b61aceac-6376-4502-9e47-ee8b052acc89",
-        "pizza": 4,
-        "status": "pending"
-    }
+  {
+    "address": "221B Baker Street",
+    "orderId": "3be9f229-28ea-454e-a5de-9ae9d4301bcb",
+    "pizza": 4,
+    "status": "pending"
+  },
+  {
+    "address": "221B Baker Street",
+    "orderId": "edcc420f-dd93-415b-a0df-236fed3c6625",
+    "pizza": 4,
+    "status": "pending"
+  },
+  {
+    "address": "Moscow",
+    "orderStatus": "pending",
+    "orderId": "0d55afb1-9eab-4ea5-9023-5003a65414d5",
+    "pizza": 3
+  }
 ]
+```
 
+```
+// DELETE ORDER
+$ curl -i \
+    -H "Content-Type: application/json" \
+    -X DELETE ${AWS_DEFAULT_URL}/latest/orders/0d55afb1-9eab-4ea5-9023-5003a65414d5
 ```
 
 <br/>

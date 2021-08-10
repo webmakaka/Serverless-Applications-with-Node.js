@@ -20,7 +20,7 @@ function createOrder(request) {
     );
 
   return rp
-    .post('https://fake-delivery-api.effortlessserverless.com/delivery', {
+    .post('https://some-like-it-hot.effortless-serverless.com/delivery', {
       headers: {
         Authorization: 'aunt-marias-pizzeria-1234567890',
         'Content-type': 'application/json',

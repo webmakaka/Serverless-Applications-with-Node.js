@@ -4,6 +4,8 @@
 
 ### Chapter 06: Level up your API
 
+<br/>
+
 - AWS Cognito SDK
 - API Gateway
 - AWS Lambda
@@ -36,7 +38,7 @@
 
 ### THEY REMOVED GET ALL ORDERS FROM APP IN THE SRC FOR CHAPTER 06 !!!
 
-REQUEST FROM ABOWE WILL NOT WORK AFTER UPDATE APP.
+REQUEST FROM ABOVE WILL NOT WORK AFTER UPDATE APP.
 
 <br/>
 
@@ -394,7 +396,7 @@ Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show De
 **Response:**
 
 ```
-{"errorMessage":"getaddrinfo ENOTFOUND fake-delivery-api.effortlessserverless.com"}, status: 400
+{"errorMessage":"getaddrinfo ENOTFOUND some-like-it-hot.effortless-serverless.com"}, status: 400
 ```
 
 <br/>

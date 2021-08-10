@@ -19,7 +19,7 @@ GateWay: pizza-api
 <br/>
 
     $ cp chapter-03/app/api
-    $ npm install
+    $ yarn install
     $ npm run create
 
 <br/>
@@ -36,9 +36,9 @@ GateWay: pizza-api
     "region": "eu-central-1"
   },
   "api": {
-    "id": "co8j9db4nc",
+    "id": "8kcum9jvta",
     "module": "api",
-    "url": "https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://8kcum9jvta.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
 ```
@@ -46,7 +46,7 @@ GateWay: pizza-api
 <br/>
 
     $ export AWS_DEFAULT_REGION=eu-central-1
-    $ export AWS_DEFAULT_URL=https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com
+    $ export AWS_DEFAULT_URL=https://8kcum9jvta.execute-api.eu-central-1.amazonaws.com
 
 <br/>
 
@@ -65,11 +65,13 @@ GateWay: pizza-api
 
 <br/>
 
-    // CREATE A NEW ORDER
-    $ curl -i \
+```
+// CREATE A NEW ORDER
+$ curl -i \
     -d '{"pizza":4, "address":"221B Baker Street"}' \
     -H "Content-Type: application/json" \
     -X POST ${AWS_DEFAULT_URL}/latest/orders
+```
 
 <br/>
 
@@ -79,27 +81,31 @@ GateWay: pizza-api
 HTTP/2 201
 content-type: application/json
 content-length: 2
-date: Fri, 27 Nov 2020 05:30:25 GMT
-x-amzn-requestid: eeae88cf-152c-4d0a-8785-88e953416446
+date: Tue, 10 Aug 2021 15:44:08 GMT
+x-amzn-requestid: 2f8959d8-5f19-40ba-905c-aaf37211fdca
 access-control-allow-origin: *
 access-control-allow-headers: Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token
-x-amz-apigw-id: WptFeHheFiAFjMQ=
+x-amz-apigw-id: D22_GENtFiAFrYw=
 access-control-allow-methods: GET,POST,OPTIONS
-x-amzn-trace-id: Root=1-5fc08eef-1cd4c43e349382d30c40d5c4;Sampled=0
+x-amzn-trace-id: Root=1-61129ec6-28e8ad732a7170d353fe3023;Sampled=0
 access-control-max-age: 0
 access-control-allow-credentials: true
 x-cache: Miss from cloudfront
-via: 1.1 e0a5445a9b6b20c3399e57d2c05d4520.cloudfront.net (CloudFront)
+via: 1.1 66be79bde9fd204b1a11f560cee8fff4.cloudfront.net (CloudFront)
 x-amz-cf-pop: ARN1-C1
-x-amz-cf-id: TZ_5A1GAzN4ScRxSXh0Aq4jHcytCMv8o-SSuLCP8UC86GHRNMkHuZw==
+x-amz-cf-id: wUva0b3ADttWTMDvhG8TLVKgMiPLchKyG77F26dtxCY-sy9f5vY0Mw==
+
+{}
 ```
 
 <br/>
 
-    $ aws dynamodb scan \
-        --region ${AWS_DEFAULT_REGION} \
-        --table-name pizza-orders \
-        --output json
+```
+$ aws dynamodb scan \
+    --region ${AWS_DEFAULT_REGION} \
+    --table-name pizza-orders \
+    --output json
+```
 
 <br/>
 
@@ -111,7 +117,7 @@ x-amz-cf-id: TZ_5A1GAzN4ScRxSXh0Aq4jHcytCMv8o-SSuLCP8UC86GHRNMkHuZw==
                 "S": "221B Baker Street"
             },
             "orderId": {
-                "S": "b61aceac-6376-4502-9e47-ee8b052acc89"
+                "S": "3be9f229-28ea-454e-a5de-9ae9d4301bcb"
             },
             "pizza": {
                 "N": "4"
@@ -129,11 +135,13 @@ x-amz-cf-id: TZ_5A1GAzN4ScRxSXh0Aq4jHcytCMv8o-SSuLCP8UC86GHRNMkHuZw==
 
 <br/>
 
-    // GET ALL ORDERS
-    $ curl \
+```
+// GET ALL ORDERS
+$ curl \
     -H "Content-Type: application/json" \
     -X GET ${AWS_DEFAULT_URL}/latest/orders \
-    | python3 -m json.tool
+    | jq
+```
 
 <br/>
 
@@ -141,7 +149,7 @@ x-amz-cf-id: TZ_5A1GAzN4ScRxSXh0Aq4jHcytCMv8o-SSuLCP8UC86GHRNMkHuZw==
 [
     {
         "address": "221B Baker Street",
-        "orderId": "b61aceac-6376-4502-9e47-ee8b052acc89",
+        "orderId": "3be9f229-28ea-454e-a5de-9ae9d4301bcb",
         "pizza": 4,
         "status": "pending"
     }
@@ -150,21 +158,15 @@ x-amz-cf-id: TZ_5A1GAzN4ScRxSXh0Aq4jHcytCMv8o-SSuLCP8UC86GHRNMkHuZw==
 
 <br/>
 
-    // CREATE A NEW ORDER
-    $ curl -o - -s -w ", status: %{http_code}\n" \
-        -H "Content-Type: application/json" \
-        -d '{"pizza":4, "address":"221B Baker Street"}' \
-        -X POST ${AWS_DEFAULT_URL}/latest/orders
-
-<br/>
-
 ```
-{"errorMessage":"getaddrinfo ENOTFOUND fake-delivery-api.effortlessserverless.com"}, status: 400
+// CREATE A NEW ORDER
 ```
 
 <br/>
 
-**Something not working!**
+```
+// GET ALL ORDERS
+```
 
 <br/>
 

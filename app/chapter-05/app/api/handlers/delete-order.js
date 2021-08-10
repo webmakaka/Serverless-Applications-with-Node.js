@@ -20,7 +20,7 @@ function deleteOrder(orderId) {
         throw new Error('Order status is not pending');
 
       return rp.delete(
-        `https://fake-delivery-api.effortlessserverless.com/delivery/${orderId}`,
+        `https://some-like-it-hot.effortless-serverless.com/delivery/${orderId}`,
         {
           headers: {
             Authorization: 'aunt-marias-pizzeria-1234567890',
