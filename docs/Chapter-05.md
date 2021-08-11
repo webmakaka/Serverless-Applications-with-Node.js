@@ -14,47 +14,73 @@
 
 <br/>
 
-    $ aws logs \
-      filter-log-events \
-      --filter='Save an order' \
-      --log-group-name=/aws/lambda/pizza-api \
-      --region=${AWS_DEFAULT_REGION} \
-      --output=json
+### Cloud Watch
+
+```
+$ aws logs \
+    filter-log-events \
+    --filter='Save an order' \
+    --log-group-name=/aws/lambda/pizza-api \
+    --region=${AWS_DEFAULT_REGION} \
+    --output=json
+```
 
 <br/>
 
-    $ aws logs \
-      filter-log-events \
-      --filter='Save an order' \
-      --log-group-name=/aws/lambda/pizza-api \
-      --region=${AWS_DEFAULT_REGION} \
-      --output=text
+```
+$ aws logs \
+    filter-log-events \
+    --filter='Save an order' \
+    --log-group-name=/aws/lambda/pizza-api \
+    --region=${AWS_DEFAULT_REGION} \
+    --output=text
+```
 
 <br/>
 
-    $ aws iam \
-        attach-role-policy \
-        --policy-arn arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess \
-        --role-name pizza-api-executor \
-        --region ${AWS_DEFAULT_REGION} \
-        --output json
+### Add X-RAY
 
 <br/>
 
-    $ aws lambda \
-        update-function-configuration \
-        --function-name pizza-api \
-        --tracing-config Mode=Active \
-        --region ${AWS_DEFAULT_REGION}
+```
+$ aws iam \
+    attach-role-policy \
+    --policy-arn arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess \
+    --role-name pizza-api-executor \
+    --region ${AWS_DEFAULT_REGION} \
+    --output json
+```
 
 <br/>
 
-    $ aws logs \
-        filter-log-events \
-        --filter='Order is saved!' \
-        --log-group-name=/aws/lambda/pizza-api \
-        --query='events[0].message' \
-        --output=text
+```
+$ aws lambda \
+    update-function-configuration \
+    --function-name pizza-api \
+    --tracing-config Mode=Active \
+    --region ${AWS_DEFAULT_REGION}
+```
+
+<br/>
+
+```
+// CREATE ORDER
+```
+
+<br/>
+
+```
+$ aws logs \
+    filter-log-events \
+    --filter='Order is saved!' \
+    --log-group-name=/aws/lambda/pizza-api \
+    --query='events[0].message' \
+    --output=text
+```
+
+<br/>
+
+https://eu-central-1.console.aws.amazon.com/xray/home?region=eu-central-1#/service-map
 
 <br/>
 

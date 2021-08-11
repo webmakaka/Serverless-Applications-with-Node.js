@@ -9,36 +9,7 @@
 - AWS Cognito SDK
 - API Gateway
 - AWS Lambda
-
-<br/>
-
-    $ cd chapter-06/app/api/pizza-api
-
-<br/>
-
-    $ curl \
-        -H "Content-Type: application/json" \
-        -X GET ${AWS_DEFAULT_URL}/latest/orders \
-        | python3 -m json.tool
-
-<br/>
-
-```
-[
-    {
-        "address": "221B Baker Street",
-        "orderId": "b61aceac-6376-4502-9e47-ee8b052acc89",
-        "pizza": 4,
-        "status": "pending"
-    }
-]
-```
-
-<br/>
-
-### THEY REMOVED GET ALL ORDERS FROM APP IN THE SRC FOR CHAPTER 06 !!!
-
-REQUEST FROM ABOVE WILL NOT WORK AFTER UPDATE APP.
+- DynamoDB
 
 <br/>
 
@@ -46,53 +17,55 @@ REQUEST FROM ABOVE WILL NOT WORK AFTER UPDATE APP.
 
 <br/>
 
-    $ aws cognito-idp create-user-pool \
-        --region ${AWS_DEFAULT_REGION} \
-        --pool-name Pizzeria \
-        --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \
-        --username-attributes email \
-        --query UserPool.Id \
-        --output text
+```
+// CREATE USER POOL
+$ aws cognito-idp create-user-pool \
+    --region ${AWS_DEFAULT_REGION} \
+    --pool-name Pizzeria \
+    --policies "PasswordPolicy={MinimumLength=8,RequireUppercase=false, RequireLowercase=false,RequireNumbers=false,RequireSymbols=false}" \
+    --username-attributes email \
+    --query UserPool.Id \
+    --output text
+```
 
 <br/>
 
 **Returns:**
 
 ```
-eu-central-1_xPY9d5nko
+eu-central-1_uSh9A5Glw
 ```
 
 <br/>
 
-    $ export AWS_USER_POOL_ID=eu-central-1_xPY9d5nko
+    $ export AWS_USER_POOL_ID=eu-central-1_uSh9A5Glw
 
 <br/>
 
 <!--
 enabledAuthFlows: [AuthFlow.USER_PASSWORD]
-
-
-ОБЯЗАТЕЛЬНО ПРОВЕРЬ!
-
 -->
 
-    $ aws cognito-idp create-user-pool-client \
-        --region ${AWS_DEFAULT_REGION} \
-        --user-pool-id ${AWS_USER_POOL_ID} \
-        --client-name PizzeriaClient \
-        --no-generate-secret \
-        --query UserPoolClient.ClientId \
-        --output text
+```
+// CREATE CLIENT
+$ aws cognito-idp create-user-pool-client \
+    --region ${AWS_DEFAULT_REGION} \
+    --user-pool-id ${AWS_USER_POOL_ID} \
+    --client-name PizzeriaClient \
+    --no-generate-secret \
+    --query UserPoolClient.ClientId \
+    --output text
+```
 
 <br/>
 
 **Returns:**
 
 ```
-4r1rlfokv9121t4fb48dvoia50
+1du30g9a9jtf9lc757c87oh4h1
 ```
 
-    $ export AWS_WEB_CLIENT_ID=4r1rlfokv9121t4fb48dvoia50
+    $ export AWS_WEB_CLIENT_ID=1du30g9a9jtf9lc757c87oh4h1
 
 <br/>
 
@@ -101,24 +74,29 @@ enabledAuthFlows: [AuthFlow.USER_PASSWORD]
         --supported-login-providers graph.facebook.com=266094173886660 \
 -->
 
-    $ aws cognito-identity create-identity-pool \
-        --identity-pool-name Pizzeria \
-        --allow-unauthenticated-identities \
-        --cognito-identity-providers ProviderName=cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_USER_POOL_ID},ClientId=${AWS_WEB_CLIENT_ID},ServerSideTokenCheck=false \
-        --query IdentityPoolId \
-        --output text
+```
+// CREATE IDENTITY POOL
+$ aws cognito-identity create-identity-pool \
+    --identity-pool-name Pizzeria \
+    --allow-unauthenticated-identities \
+    --cognito-identity-providers ProviderName=cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_USER_POOL_ID},ClientId=${AWS_WEB_CLIENT_ID},ServerSideTokenCheck=false \
+    --query IdentityPoolId \
+    --output text
+```
 
 <br/>
 
 **Returns:**
 
 ```
-eu-central-1:2c6b1f13-662b-4c75-9983-8863f28d6f29
+eu-central-1:de2d5342-57a1-46f1-8242-b9cb55b69f4a
 ```
 
 <br/>
 
-    $ export AWS_IDENTITY_POOL_ID=eu-central-1:2c6b1f13-662b-4c75-9983-8863f28d6f29
+```
+$ export AWS_IDENTITY_POOL_ID=eu-central-1:de2d5342-57a1-46f1-8242-b9cb55b69f4a
+```
 
 <br/>
 
@@ -134,7 +112,11 @@ Create -> Unauthenticated role && Authenticated role
 
 <br/>
 
-AWS web console --> IAM --> Roles --> arn
+Save changes
+
+<br/>
+
+AWS web console --> IAM --> Roles --> Cognito\* --> arn
 
 <br/>
 
@@ -145,9 +127,12 @@ $ export AWS_ROLE2_ARN_UNAUTH=arn:aws:iam::859153500889:role/Cognito_PizzeriaUna
 
 <br/>
 
-    $ aws cognito-identity set-identity-pool-roles \
+```
+// SET IDENTITY POOL
+$ aws cognito-identity set-identity-pool-roles \
     --identity-pool-id ${AWS_IDENTITY_POOL_ID} \
     --roles authenticated=${AWS_ROLE1_ARN_AUTH},unauthenticated=${AWS_ROLE2_ARN_UNAUTH}
+```
 
 <br/>
 
@@ -172,15 +157,8 @@ Set userPoolArn
 
 <br/>
 
-    $ npm install
-
-    // If you want to create from the beginning
+    $ yarn install
     $ npm run create
-
-or
-
-    // If you want to resume from previous steps
-    $ npm run update
 
 <br/>
 
@@ -194,16 +172,22 @@ or
     "region": "eu-central-1"
   },
   "api": {
-    "id": "9clq4fz1fj",
+    "id": "jneuf31gdg",
     "module": "api",
-    "url": "https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com/latest"
+    "url": "https://jneuf31gdg.execute-api.eu-central-1.amazonaws.com/latest"
   }
 }
 ```
 
 <br/>
 
-    $ export AWS_DEFAULT_URL=https://co8j9db4nc.execute-api.eu-central-1.amazonaws.com
+    $ export AWS_DEFAULT_URL=https://jneuf31gdg.execute-api.eu-central-1.amazonaws.com
+
+<br/>
+
+```
+// CREATE DYNAMODB TABLE (Chapter-03)
+```
 
 <br/>
 
@@ -211,52 +195,53 @@ or
     $ curl \
         -H "Content-Type: application/json" \
         -X GET ${AWS_DEFAULT_URL}/latest/pizzas \
-        | python3 -m json.tool
+        | jq
+
+<br/>
 
 ```
 [
-    {
-        "id": 1,
-        "name": "Capricciosa",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella",
-            "mushrooms",
-            "ham",
-            "olives"
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Quattro Formaggi",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella",
-            "parmesan cheese",
-            "blue cheese",
-            "goat cheese"
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Napoletana",
-        "ingredients": [
-            "tomato sauce",
-            "anchovies",
-            "olives",
-            "capers"
-        ]
-    },
-    {
-        "id": 4,
-        "name": "Margherita",
-        "ingredients": [
-            "tomato sauce",
-            "mozzarella"
-        ]
-    }
+  {
+    "id": 1,
+    "name": "Capricciosa",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella",
+      "mushrooms",
+      "ham",
+      "olives"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Quattro Formaggi",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella",
+      "parmesan cheese",
+      "blue cheese",
+      "goat cheese"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Napoletana",
+    "ingredients": [
+      "tomato sauce",
+      "anchovies",
+      "olives",
+      "capers"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Margherita",
+    "ingredients": [
+      "tomato sauce",
+      "mozzarella"
+    ]
+  }
 ]
-
 ```
 
 <br/>
@@ -273,7 +258,9 @@ AWS Web Console-> Cognito -> Manage User Pools -> Pizzeria -> Users and groups
 
 <br/>
 
-Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show Details -> Enable username password based authentication (ALLOW_USER_PASSWORD_AUTH)
+General Settings -> App Clients -> Show Details -> Enable username password based authentication (ALLOW_USER_PASSWORD_AUTH)
+
+Save app client changes
 
 <br/>
 
@@ -288,24 +275,26 @@ Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show De
     "PASSWORD": "mypassword"
   },
   "AuthFlow": "USER_PASSWORD_AUTH",
-  "ClientId": "4r1rlfokv9121t4fb48dvoia50"
+  "ClientId": "client_id"
 }
 ```
 
 <br/>
 
-    $ curl -X POST \
-        --data @user-data.json \
-        -H 'X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth' \
-        -H 'Content-Type: application/x-amz-json-1.1' \
-        https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
-        | python3 -m json.tool
+```
+$ curl -X POST \
+    --data @user-data.json \
+    -H 'X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth' \
+    -H 'Content-Type: application/x-amz-json-1.1' \
+    https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
+    | jq
+```
 
 <br/>
 
 ```
 ***
-    "ChallengeName": "NEW_PASSWORD_REQUIRED",
+"ChallengeName": "NEW_PASSWORD_REQUIRED",
 ***
 ```
 
@@ -322,31 +311,36 @@ Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show De
     "USERNAME": "myusername@gmail.com",
     "NEW_PASSWORD": "mynewpassword"
   },
-  "ClientId": "4r1rlfokv9121t4fb48dvoia50",
-  "Session": "session id"
+  "ClientId": "client_id",
+  "Session": "session_id"
 }
 ```
 
 <br/>
 
-    $ curl -X POST \
-        --data @user-data-challenge.json \
-        -H 'X-Amz-Target: AWSCognitoIdentityProviderService.RespondToAuthChallenge' \
-        -H 'Content-Type: application/x-amz-json-1.1' \
-        https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
-        | python3 -m json.tool
+```
+// NEW PASSWORD
+$ curl -X POST \
+    --data @user-data-challenge.json \
+    -H 'X-Amz-Target: AWSCognitoIdentityProviderService.RespondToAuthChallenge' \
+    -H 'Content-Type: application/x-amz-json-1.1' \
+    https://cognito-idp.${AWS_DEFAULT_REGION}.amazonaws.com/  \
+    | jq
+```
 
 <br/>
 
 **Response:**
 
+<br/>
+
 ```
 {
     "AuthenticationResult": {
-        "AccessToken": "AccessToken",
+        "AccessToken": "<AccessToken>",
         "ExpiresIn": 3600,
-        "IdToken": "IdToken",
-        "RefreshToken": "RefreshToken",
+        "IdToken": "<IdToken>",
+        "RefreshToken": "<RefreshToken>",
         "TokenType": "Bearer"
     },
     "ChallengeParameters": {}
@@ -356,7 +350,17 @@ Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show De
 
 <br/>
 
+API Gateway -> pizza-api -> Authorizers -> Create New Authorizer
+
+<br/>
+
 ![Application](/img/pic-ch06-p03.png?raw=true)
+
+<br/>
+
+**Need to pass IdToken as Authorization. Not AccessToken.**
+
+Test -> <IdToken>
 
 <br/>
 
@@ -364,40 +368,92 @@ Your User Pools -> (the user pool) -> General Settings -> App Clients -> Show De
 
 <br/>
 
-    // CREATE A NEW ORDER
-    $ curl -o - -s -w ", status: %{http_code}\n" \
-        -H "Content-Type: application/json" \
-        -d '{"pizzaId":4, "address":"221B Baker Street"}' \
-        -X POST ${AWS_DEFAULT_URL}/latest/orders
+API Gateway -> pizza-api -> post -> Method Request
+
+Authorization -> cognitoAuthorizer -> save
+
+<br/>
+
+![Application](/img/pic-ch06-p05.png?raw=true)
+
+<br/>
+
+**Actions -> Deploy API**
+
+<br/>
+
+```
+$ export ID_TOKEN=<IdToken>
+```
+
+<br/>
+
+```
+// CREATE A NEW ORDER WITH AUTH
+$ curl -o - -s -w ", status: %{http_code}\n" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: ${ID_TOKEN}" \
+    -d '{"pizza":4, "address":"221B Baker Street"}' \
+    -X POST ${AWS_DEFAULT_URL}/latest/orders
+```
 
 <br/>
 
 **Response:**
 
+<br/>
+
 ```
-{"message":"Unauthorized"}, status: 401
+{}, status: 201
 ```
 
 <br/>
 
-**Need to pass IdToken as Authorization. Not AccessToken.**
+```
+$ aws logs \
+    filter-log-events \
+    --filter='Request context' \
+    --log-group-name=/aws/lambda/pizza-api \
+    --region=${AWS_DEFAULT_REGION} \
+    --output=text
+```
 
 <br/>
 
-    // CREATE A NEW ORDER
-    $ curl -o - -s -w ", status: %{http_code}\n" \
-        -H "Content-Type: application/json" \
-        -H "Authorization: IdToken" \
-        -d '{"pizza":4, "address":"221B Baker Street"}' \
-        -X POST ${AWS_DEFAULT_URL}/latest/orders
+**response:**
 
 <br/>
 
-**Response:**
+```
+{
+****
+  authorizer: {
+    claims: {
+      sub: 'f8876662-51a8-444b-9859-239b93b6dd7c',
+      email_verified: 'true',
+      iss: 'https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_uSh9A5Glw',
+      phone_number_verified: 'true',
+      'cognito:username': 'f8876662-51a8-444b-9859-239b93b6dd7c',
+      origin_jti: 'b10075af-c78e-4a3c-9d7f-516bfc4a7385',
+      aud: '1du30g9a9jtf9lc757c87oh4h1',
+      event_id: '859369da-ca4f-4dd5-b5c9-d7b4597e0e52',
+      token_use: 'id',
+      auth_time: '1628686765',
+      phone_number: '+75555555',
+      exp: 'Wed Aug 11 13:59:25 UTC 2021',
+      iat: 'Wed Aug 11 12:59:25 UTC 2021',
+      jti: '906867c9-8055-450b-bf1c-ec098b96028f',
+      email: 'myEmail@gmail.com'
+    }
+  }
+}
 
+}
 ```
-{"errorMessage":"getaddrinfo ENOTFOUND some-like-it-hot.effortless-serverless.com"}, status: 400
-```
+
+<br/>
+
+![Application](/img/pic-ch06-p06.png?raw=true)
 
 <br/>
 

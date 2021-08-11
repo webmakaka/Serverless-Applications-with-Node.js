@@ -187,7 +187,7 @@ DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 
 ```
 AWS Web Console:
-    IMA -> Roles -> delete -> role: pizza-api-executor
+    IAM -> Roles -> delete -> role: pizza-api-executor
     API Gateway -> Europe (Frankfurt) eu-central-1 -> delete -> pizza-api
     Lambda -> Europe (Frankfurt) eu-central-1 -> delete -> pizza-api
 

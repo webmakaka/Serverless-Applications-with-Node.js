@@ -126,11 +126,10 @@ DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
 
 ```
 AWS Web Console Europe (Frankfurt):
-    IMA -> Roles -> delete -> role: pizza-api-executor
+    IAM -> Roles -> delete -> role: pizza-api-executor
     API Gateway -> delete -> pizza-api
     Lambda -> delete -> pizza-api
     DynamoDB -> Tables -> delete -> pizza-orders
-
 ```
 
 <br/>

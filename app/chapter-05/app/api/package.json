@@ -8,7 +8,8 @@
     "update": "claudia update --cache-api-config apiConfig --no-optional-dependencies"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.963.0"
+    "aws-sdk": "^2.965.0",
+    "aws-xray-sdk-core": "^3.3.3"
   },
   "devDependencies": {
     "claudia": "^5.13.1"

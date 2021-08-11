@@ -50,14 +50,17 @@ GateWay: pizza-api
 
 <br/>
 
-    $ aws dynamodb create-table \
-        --region ${AWS_DEFAULT_REGION} \
-        --table-name pizza-orders \
-        --attribute-definitions AttributeName=orderId,AttributeType=S \
-        --key-schema AttributeName=orderId,KeyType=HASH \
-        --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
-        --query TableDescription.TableArn \
-        --output text
+```
+// CREATE TABLE
+$ aws dynamodb create-table \
+    --region ${AWS_DEFAULT_REGION} \
+    --table-name pizza-orders \
+    --attribute-definitions AttributeName=orderId,AttributeType=S \
+    --key-schema AttributeName=orderId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --query TableDescription.TableArn \
+    --output text
+```
 
 <br/>
 
