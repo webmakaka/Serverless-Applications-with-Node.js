@@ -11,10 +11,11 @@
 <br/>
 
     $ export AWS_DEFAULT_REGION=eu-central-1
+    $ export AWS_DEFAULT_BUCKET=aunt-marias-pizzeria1
 
 <br/>
 
-    $ aws s3 mb s3://aunt-marias-pizzeria --region ${AWS_DEFAULT_REGION}
+    $ aws s3 mb s3://${AWS_DEFAULT_BUCKET} --region ${AWS_DEFAULT_REGION}
 
 <br/>
 
@@ -35,14 +36,44 @@
 <br/>
 
     $ claudia add-s3-event-source \
-        --bucket aunt-marias-pizzeria \
+        --region ${AWS_DEFAULT_REGION} \
+        --bucket ${AWS_DEFAULT_BUCKET} \
         --prefix images/
 
-<br/>s
+<br/>
 
 ```
-DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!! IF THEY ARE NOT NEEDED!!!
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
 ```
+
+<br/>
+
+```
+AWS Web Console -> Region Frankfurt:
+
+    Cognito --> Pools --> Delete Pool
+    Cognito --> Identity Pools --> Delete Pool
+
+    IAM -> Roles -> delete -> role:
+        pizza-api-executor
+        pizza-image-processor-execu
+        COgniot_PizzeriaAuth_Role
+        COgniot_PizzeriaUnauth_Role
+
+    API Gateway -> Europe (Frankfurt) eu-central-1 -> delete ->
+        pizza-api
+
+    S3 -> delete bucket -> aunt-marias-pizzeria1
+
+    Lambda -> delete ->
+        pizza-api
+        pizza-image-processor
+
+    DynamoDB -> Europe (Frankfurt) eu-central-1 -> pizza-orders --> Delete Table
+
+```
+
+<br/>
 
 ---
 

@@ -7,6 +7,9 @@
     "update": "claudia update --cache-api-config apiConfig"
   },
   "devDependencies": {
-    "claudia": "^2.14.3"
+    "claudia": "^5.13.1"
+  },
+  "dependencies": {
+    "claudia-bot-builder": "^4.5.0"
   }
 }
