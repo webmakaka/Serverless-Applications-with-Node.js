@@ -49,6 +49,10 @@ Looks like claudia-bot-builder is not in active development state.
 
 ### [Chapter 08: When pizza is one message away: Chatbots](./Chapter-08.md)
 
+### [Chapter 09: Typing... Async and delayed responses](./Chapter-09.md)
+
+### [Chapter 10: Jarvis, I mean Alexa, order me a pizza](./Chapter-10.md)
+
 <br/>
 
 ---

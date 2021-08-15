@@ -13,20 +13,20 @@
     "debug": "node debug spec/support/jasmine-runner.js"
   },
   "optionalDependencies": {
-    "aws-sdk": "^2.92.0"
+    "aws-sdk": "^2.968.0"
   },
   "devDependencies": {
-    "claudia": "^2.14.2",
-    "dotenv": "^4.0.0",
-    "eslint": "^4.13.0",
+    "claudia": "^5.13.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
     "eslint-config-defaults": "^9.0.0",
     "fake-http-request": "^1.4.0",
-    "jasmine": "^2.8.0",
-    "jasmine-spec-reporter": "^4.2.1"
+    "jasmine": "^3.8.0",
+    "jasmine-spec-reporter": "^7.0.0"
   },
   "license": "MIT",
   "dependencies": {
-    "claudia-api-builder": "^2.5.1",
-    "minimal-request-promise": "^1.4.0"
+    "claudia-api-builder": "^4.1.2",
+    "minimal-request-promise": "^1.5.0"
   }
 }

@@ -79,6 +79,10 @@ or
 
 <br/>
 
+## Part 3: Next steps
+
+<br/>
+
 ### [Step by Step Development](./docs/Part2.md)
 
 ---
