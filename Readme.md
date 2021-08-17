@@ -25,6 +25,22 @@ https://github.com/serverlesspub/some-like-it-hot-delivery
 
 <br/>
 
+## Part 2: Let's talk
+
+<br/>
+
+### [Step by Step Development](./docs/Part2.md)
+
+<br/>
+
+## Part 3: Next steps
+
+<br/>
+
+### [Step by Step Development](./docs/Part3.md)
+
+<br/>
+
 ### Client
 
 <br/>
@@ -74,16 +90,6 @@ or
 ![Application](/img/pic-part01-p02.png?raw=true)
 
 <br/>
-
-## Part 2: Let's talk
-
-<br/>
-
-## Part 3: Next steps
-
-<br/>
-
-### [Step by Step Development](./docs/Part2.md)
 
 ---
 

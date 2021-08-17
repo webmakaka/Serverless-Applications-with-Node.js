@@ -2,15 +2,26 @@
 
 <br/>
 
-# Part 3: Next steps
+### Chapter 12: Paying for pizza
 
 <br/>
 
-### [Chapter 11: Testing, Testing, 1, 2, 3](./Chapter-11.md)
+    $ export AWS_DEFAULT_REGION=eu-central-1
 
-### [Chapter 12: Paying for pizza](./Chapter-12.md)
+<br/>
 
-### [Chapter 13: Migrating your existing Express.js app to AWS Lambda](./Chapter-13.md)
+```
+$ claudia create \
+    --region ${AWS_DEFAULT_REGION} \
+    --api-module payment \
+    --set-env STRIPE_SECRET_KEY=<YOUR_STRIPE_SECRET_KEY>
+```
+
+<br/>
+
+```
+DO NOT FORGET TO REMOVE ALL CREATED RESOURCES !!!
+```
 
 <br/>
 
